@@ -259,7 +259,7 @@ module.exports = class ColorPicker extends Component {
 				},
 				null,
 			],
-			{listener: this.updateHueSaturation}
+			{useNativeDriver: false, listener: (event) => this.updateHueSaturation(event)} 
 		)
 		this.sliderMovement = new Animated.event(
 			[
@@ -271,7 +271,7 @@ module.exports = class ColorPicker extends Component {
 				},
 				null,
 			],
-			{listener: this.updateValue}
+			{useNativeDriver: false, listener: (event) => this.updateValue(event)}
 		)
 		this.renderSwatches()
 		this.renderDiscs()
@@ -286,7 +286,8 @@ module.exports = class ColorPicker extends Component {
 		this.swatchAnim[i].stopAnimation()
 		Animated.timing(this.swatchAnim[i], {
 			toValue: 1,
-			duration: 500,
+			duration: 400,
+      			useNativeDriver: false,
 		}).start(x=>{
 			this.swatchAnim[i].setValue(0)
 		})
@@ -296,7 +297,8 @@ module.exports = class ColorPicker extends Component {
 		this.discAnim[i].stopAnimation()
 		Animated.timing(this.discAnim[i], {
 			toValue: 1,
-			duration: 500,
+			duration: 400,
+      			useNativeDriver: false,
 		}).start(x=>{
 			this.discAnim[i].setValue(0)
 		})
@@ -451,14 +453,14 @@ module.exports = class ColorPicker extends Component {
 		if (this.props.onColorChangeComplete) this.props.onColorChangeComplete(hsv2Hex(hsv))
 		let anims = []
 		if(who_hs||!specific) anims.push(//{//
-			Animated.spring(this.panX, { toValue: left, friction: 90 }),//.start()//
-			Animated.spring(this.panY, { toValue: top, friction: 90 }),//.start()//
+			Animated.spring(this.panX, { toValue: left, friction: 90, useNativeDriver: false}),//.start()//
+			Animated.spring(this.panY, { toValue: top, friction: 90, useNativeDriver: false}),//.start()//
 		)//}//
 		if(who_v||!specific) anims.push(//{//
-			Animated.spring(this.slideX, { toValue: range, friction: 90 }),//.start()//
-			Animated.spring(this.slideY, { toValue: range, friction: 90 }),//.start()//
+			Animated.spring(this.slideX, { toValue: range, friction: 90, useNativeDriver: false}),//.start()//
+			Animated.spring(this.slideY, { toValue: range, friction: 90, useNativeDriver: false}),//.start()//
 		)//}//
-		Animated.parallel(anims).start()
+		Animated.parallel(anims, {useNativeDriver: false}).start()
 	}
 	// componentWillReceiveProps(nextProps) {
 	// 	const { color } = nextProps
